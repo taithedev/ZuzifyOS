@@ -15,6 +15,9 @@ static void push_line(const char *s){
 void term_line(const char *message){
     char line[TERM_COLS];size_t n=0;
     if(!message)message="";
+    serial_write("TERM: ");
+    serial_write(message);
+    serial_write("\n");
     do{
         char c=*message++;
         if(c=='\n' || c==0 || n+1>=TERM_COLS){

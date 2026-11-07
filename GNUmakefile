@@ -13,7 +13,7 @@ LDFLAGS := -nostdlib -static -z max-page-size=0x1000 --gc-sections -T kernel/lin
 SOURCES := $(shell find kernel/src -type f -name '*.c' | LC_ALL=C sort)
 OBJECTS := $(patsubst kernel/src/%.c,build/obj/%.o,$(SOURCES))
 
-.PHONY: all kernel iso run test clean
+.PHONY: all kernel iso run test test-interactive clean
 all: iso
 kernel: build/kernel.elf
 
@@ -35,6 +35,9 @@ run: iso
 
 test: iso
 	bash scripts/smoke-test.sh
+
+test-interactive: iso
+	bash scripts/terminal-test.sh
 
 clean:
 	rm -rf build .iso-work

@@ -53,7 +53,7 @@ update check
 
 ## CI and releases
 
-Pushes and pull requests build the ISO and execute an automated QEMU boot-log smoke test. A tag such as `v0.1.0-alpha` also publishes a GitHub Release with an ISO, SHA-256 checksum, and JSON metadata. These are **release checks**, not in-OS automatic updates: a secure updater requires networking, persistent storage, signatures, and rollback.
+Pushes and pull requests build the ISO, verify the serial boot marker, and exercise the terminal with injected QEMU keyboard input. Successful pushes to main also publish a rolling \`nightly\` prerelease ISO. A tag such as `v0.1.0-alpha` also publishes a GitHub Release with an ISO, SHA-256 checksum, and JSON metadata. These are **release checks**, not in-OS automatic updates: a secure updater requires networking, persistent storage, signatures, and rollback.
 
 ## Repository layout
 
