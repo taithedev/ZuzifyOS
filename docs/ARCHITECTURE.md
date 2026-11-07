@@ -1,9 +1,9 @@
-# Kernel architecture
+# ZuzifyOS architecture
 
-Limine provides the initial x86-64 environment, a higher-half ELF image, and framebuffer. ZuzifyOS then owns the CPU loop, draws pixels itself, and polls PS/2 ports.
+**Current target:** experimental Debian 13 Trixie Linux live distribution, KDE Plasma 6 and Wine64. Everything required for the current Linux build is under `distro/`.
 
-The graphical desktop and terminal are presently **kernel resident**. The `/usr/bin/*.zs` text scripts run through the shell interpreter, not through a process loader. This is deliberate to keep the first milestone inspectable and small.
+The previous project was a freestanding native x86-64 kernel with a separate 32-bit BIOS kernel. It remains on `archive/native-kernel-0.2`; the `kernel/` and `kernel32/` directories in the repo are legacy sources and not used for ZuzifyOS Linux.
 
-A fixed-capacity RAM tree backs filesystem commands; it is volatile and has no persistence or permissions. Serial output is used for boot observability. The update command is informational because secure OS updates are not possible before disk, network, and cryptographic foundations.
+Linux provides scheduling, networking, storage, userspace process execution and security features that were absent from the custom kernel. KDE provides a fully functioning configurable desktop and KWin's effects engine. Wine implements a subset of Windows APIs for compatible apps.
 
-Boot protocol ABI data in `limine_abi.h` is a small subset of the documented Limine protocol. Binary bootloader artifacts are downloaded from the Limine project by the ISO script. Keeping this boundary narrow helps later protocol updates.
+The live Linux image is currently a VM-first experiment, **not** a tested installer or guaranteed macOS/Windows equivalent. Updates use Debian APT where persistent; GitHub nightly ISOs are manually replaced.

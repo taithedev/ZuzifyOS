@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=ZuzifyOS Welcome
+Exec=/usr/local/bin/zuzify-welcome
+Terminal=false
+X-KDE-autostart-phase=2
+OnlyShowIn=KDE;

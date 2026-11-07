@@ -1,0 +1,4 @@
+#!/bin/sh
+# Debian Live builder configuration. Run from distro/.
+set -eu
+lb config noauto     --mode debian     --distribution trixie     --architectures amd64     --binary-image iso-hybrid     --bootloaders "syslinux,grub-efi"     --debian-installer none     --archive-areas "main contrib non-free-firmware"     --apt-recommends true     --security true     --updates true     --firmware-binary true     --firmware-chroot true     --iso-application "ZuzifyOS Linux Live"     --iso-publisher "ZuzifyOS Community"     --iso-volume "ZUZIFYOS_LIVE"     --bootappend-live "boot=live components locales=en_US.UTF-8 keyboard-layouts=us"     "$@"

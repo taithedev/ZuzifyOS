@@ -1,0 +1,10 @@
+{
+  "KPlugin": {
+    "Id": "ZuzifyFlow",
+    "Name": "Zuzify Flow",
+    "Description": "Original ZuzifyOS dark aurora ribbons",
+    "Version": "0.1.0",
+    "License": "MIT"
+  },
+  "KPackageStructure": "Plasma/Wallpaper"
+}

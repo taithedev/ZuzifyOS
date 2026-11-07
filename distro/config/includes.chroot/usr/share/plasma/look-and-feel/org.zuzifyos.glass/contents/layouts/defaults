@@ -1,0 +1,5 @@
+[Desktop]
+Containment=org.kde.plasma.folder
+
+[Panel]
+Containment=org.kde.panel

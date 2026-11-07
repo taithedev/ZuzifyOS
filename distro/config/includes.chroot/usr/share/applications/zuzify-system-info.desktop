@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=About ZuzifyOS
+Comment=View ZuzifyOS Linux system information
+Exec=/usr/local/bin/zuzify-about
+Icon=computer
+Terminal=false
+Categories=System;Settings;
