@@ -1,0 +1,12 @@
+{
+  "KPlugin": {
+    "Id": "org.zuzifyos.glass",
+    "Name": "Zuzify Glass",
+    "Description": "Original translucent ZuzifyOS desktop layout with a top bar and floating dock",
+    "Version": "0.1.0",
+    "License": "MIT",
+    "EnabledByDefault": true,
+    "Authors": [{"Name": "ZuzifyOS contributors"}]
+  },
+  "KPackageStructure": "Plasma/LookAndFeel"
+}

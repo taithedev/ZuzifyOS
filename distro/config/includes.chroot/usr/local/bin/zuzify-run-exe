@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+target="${1:-}"
+if [[ -z "$target" ]]; then
+    target="$(kdialog --getopenfilename "$HOME" '*.exe *.msi|Windows executable (*.exe, *.msi)')" || exit 0
+fi
+[[ -f "$target" ]] || { kdialog --error "File not found: $target"; exit 2; }
+command -v wine >/dev/null || { kdialog --error "Wine is not installed."; exit 3; }
+case "${target,,}" in
+    *.exe)
+        exec wine "$target"
+        ;;
+    *.msi)
+        exec wine msiexec /i "$target"
+        ;;
+    *)
+        kdialog --error "Only .exe and .msi installers are supported by this launcher."
+        exit 4
+        ;;
+esac

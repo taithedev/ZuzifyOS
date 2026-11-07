@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec kdialog --title "About ZuzifyOS" --msgbox   "ZuzifyOS Linux 0.1 alpha\nDebian 13 · KDE Plasma 6\nOriginal translucent Zuzify theme\nWindows compatibility through Wine (not guaranteed)\nBuilt and distributed as experimental open source software."

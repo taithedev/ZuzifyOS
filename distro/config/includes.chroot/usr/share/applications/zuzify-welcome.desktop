@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=ZuzifyOS Welcome
+GenericName=First-run setup and overview
+Comment=Learn about your new ZuzifyOS Linux live desktop
+Exec=/usr/local/bin/zuzify-welcome --show
+Icon=preferences-desktop-theme
+Terminal=false
+Categories=Settings;System;
+StartupNotify=true

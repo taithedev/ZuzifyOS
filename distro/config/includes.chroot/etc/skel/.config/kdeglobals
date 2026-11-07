@@ -1,0 +1,18 @@
+[KDE]
+LookAndFeelPackage=org.zuzifyos.glass
+widgetStyle=Breeze
+SingleClick=false
+
+[General]
+ColorScheme=ZuzifyMidnight
+Name=Zuzify Midnight
+font=Inter,10,-1,5,50,0,0,0,0,0
+
+[Icons]
+Theme=Papirus-Dark
+
+[WM]
+activeBackground=29,37,63
+activeForeground=238,243,255
+inactiveBackground=24,31,51
+inactiveForeground=161,176,206
