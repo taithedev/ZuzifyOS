@@ -34,8 +34,16 @@ if [[ "$arch" == x64 ]]; then
     -efi-boot-part --efi-boot-image --protective-msdos-label \
     .iso-work -o "$destination"
 else
+  # Use the same hybrid El Torito layout so Limine can find a valid partition map.
+  # This x86 kernel is verified for BIOS only; the EFI fallback is not a claim
+  # of a supported 32-bit UEFI OS environment.
+  mkdir -p .iso-work/EFI/BOOT
+  cp limine-binary/limine-uefi-cd.bin .iso-work/boot/limine/
+  cp limine-binary/BOOTX64.EFI .iso-work/EFI/BOOT/
   xorriso -as mkisofs -R -r -J -b boot/limine/limine-bios-cd.bin \
-    -no-emul-boot -boot-load-size 4 -boot-info-table \
+    -no-emul-boot -boot-load-size 4 -boot-info-table -hfsplus \
+    -apm-block-size 2048 --efi-boot boot/limine/limine-uefi-cd.bin \
+    -efi-boot-part --efi-boot-image --protective-msdos-label \
     .iso-work -o "$destination"
 fi
 ./limine-binary/limine bios-install "$destination"
