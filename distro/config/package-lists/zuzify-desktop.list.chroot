@@ -8,7 +8,6 @@ sudo
 dbus-user-session
 plasma-desktop
 plasma-workspace
-plasma-workspace-wayland
 kwin-x11
 xserver-xorg
 xwayland
