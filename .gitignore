@@ -1,0 +1,7 @@
+/build/
+/.iso-work/
+/limine-binary/
+/*.iso
+*.o
+*.log
+.DS_Store
