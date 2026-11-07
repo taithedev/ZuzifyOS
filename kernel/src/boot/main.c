@@ -32,11 +32,12 @@ void kmain(void){
     gfx_init(fb);
     fs_init();
     term_init();
-    term_redraw();
+    mouse_init();
+    ui_init();
     serial_write("ZUZIFYOS_BOOT_OK\n");
     for(;;){
         int key=kbd_poll();
-        if(key)term_key(key);
+        if(key)ui_key(key);
         __asm__ volatile("pause");
     }
 }

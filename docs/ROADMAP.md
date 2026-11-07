@@ -1,37 +1,38 @@
-# ZuzifyOS development roadmap
+# ZuzifyOS roadmap
 
-## Alpha 0.1 — bootable foundation
-- [x] Freestanding x86-64 kernel with Limine
-- [x] Direct framebuffer desktop and keyboard-driven terminal (implementation; CI smoke boot required)
-- [x] Writable RAM-only virtual filesystem
-- [x] Built-in commands, text scripts, and launcher shortcuts
-- [x] Version-tagged ISO workflow and release manifest
-- [ ] First verified QEMU boot and display inspection
+## 0.2-alpha - current
+- [x] x64 higher-half kernel boot under Limine on QEMU BIOS and UEFI
+- [x] x86 32-bit independent BIOS Multiboot2 kernel under QEMU
+- [x] x64 dark graphical desktop with rounded corners and sampled translucent panels
+- [x] x64 first-boot wizard, local session username/PIN setup and lock screen
+- [x] x64 keyboard navigation and simulated PS/2 mouse support
+- [x] x64 Settings page with three themes
+- [x] x64 RAM-only file browser, terminal, commands and text scripts
+- [x] x86 text-mode setup, PIN unlock and basic shell
+- [x] Continuous integration checking both architecture boots and setup input
+- [ ] Real-world screenshot and broad UI/usability review
+- [ ] Real device / multiple virtual machine hardware validation
 
-## Alpha 0.2 — real OS infrastructure
-- [ ] Physical memory allocator and virtual memory manager
-- [ ] IDT, interrupt handlers, timer and scheduling
-- [ ] Userspace ELF64 loader and isolated processes
-- [ ] VFS mount API and persistent FAT/ext2 driver
-- [ ] Mouse and USB HID drivers
+## 0.3-alpha - kernel fundamentals
+- [ ] Physical page allocator, proper virtual memory management
+- [ ] IDT, interrupts, timers, task/process scheduler
+- [ ] User mode isolation, syscalls and ELF64 application loader
+- [ ] Robust USB HID and mouse input support
+- [ ] Graphics double buffering, proper compositor and windows
+- [ ] Persistent virtual filesystem and safe disk driver
+- [ ] Persistent account DB with salted password hashing and secure handling
+- [ ] x86 GUI feature parity
 
-## Alpha 0.3 — applications and graphics
-- [ ] Backbuffer/compositor with dirty-region rendering
-- [ ] App windows, drag/drop, mouse, window focus
-- [ ] Monospace and icon asset pipeline (prefer vector-to-bitmap at build)
-- [ ] Terminal ANSI support and pipes
-- [ ] ELF64 native applications and basic syscalls
-
-## Alpha 0.4 — network and updates
-- [ ] NIC driver and network stack
-- [ ] TLS and key store
-- [ ] Signed update metadata, download, staging, rollback
-- [ ] A/B partitions and recovery environment
+## 0.4-alpha - networking and security
+- [ ] Ethernet NIC driver, network stack and time sync
+- [ ] Cryptographic primitives, key store, verified update manifests
+- [ ] Secure update download/staging/rollback and A/B partitions
+- [ ] Robust filesystem permissions and sandboxing
 
 ## Later
-- [ ] POSIX compatibility layer
-- [ ] Compatibility research for Windows PE32+ applications
-- [ ] Filesystem safety, power management, accessibility
-- [ ] Hardware validation
+- [ ] Native app ecosystem and package manager
+- [ ] Power management, accessibility and internationalization
+- [ ] Windows .exe compatibility research (PE loader, Win32 APIs or equivalent)
+- [ ] Installation and recovery tooling, extensive hardware tests
 
-**Reality check:** a compatibility layer for arbitrary Windows .exe programs is a very large separate project. It is not included in the alpha.
+**Neither x64 nor x86 image is presently suitable as a full replacement for Windows.**

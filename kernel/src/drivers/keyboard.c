@@ -23,8 +23,10 @@ static const char shifted[128]={
 };
 static bool shift_down=false, caps_on=false, extended=false;
 int kbd_poll(void){
-    if(!(inb(0x64)&1u))return 0;
+    uint8_t status=inb(0x64);
+    if(!(status&1u))return 0;
     uint8_t raw=inb(0x60);
+    if(status&0x20u){mouse_feed(raw);return 0;}
     if(raw==0xe0){extended=true;return 0;}
     if(extended){extended=false;return 0;}
     bool released=(raw&0x80u)!=0;
@@ -32,6 +34,7 @@ int kbd_poll(void){
     if(code==0x2a||code==0x36){shift_down=!released;return 0;}
     if(released)return 0;
     if(code==0x3a){caps_on=!caps_on;return 0;}
+    if(code==0x01)return 27;
     if(code==0x1c)return '\n';
     if(code==0x0e)return '\b';
     if(code==0x0f)return '\t';

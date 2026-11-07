@@ -69,9 +69,9 @@ static void run_script(const char *path){
     script_depth--;
 }
 static void launch(const char *app){
-    if(os_strcmp(app,"terminal")==0){term_line("Terminal is already open.");return;}
-    if(os_strcmp(app,"files")==0){term_line("FILES: /home/guest");listing("/home/guest");return;}
-    if(os_strcmp(app,"settings")==0){term_line("SETTINGS: use 'theme midnight' or 'theme violet'.");return;}
+    if(os_strcmp(app,"terminal")==0){ui_open(UI_TERMINAL);return;}
+    if(os_strcmp(app,"files")==0){ui_open(UI_FILES);return;}
+    if(os_strcmp(app,"settings")==0){ui_open(UI_SETTINGS);return;}
     if(os_strcmp(app,"about")==0){term_line("ZuzifyOS native x86-64 early alpha.");return;}
     if(os_strcmp(app,"calculator")==0){term_line("Calculator: type 'calc 12 * 3'.");return;}
     if(os_strcmp(app,"clock")==0){term_line("Clock requires an RTC or time-service driver.");return;}
@@ -111,7 +111,7 @@ void shell_exec(const char *input){
         term_line("COMMANDS:");
         term_line("help clear about version uname whoami echo");
         term_line("pwd ls cd mkdir touch cat write rm tree");
-        term_line("apps run calc theme update reboot");
+        term_line("apps run calc theme lock settings update reboot");
         term_line("EXAMPLES: ls /   cat /etc/os-release");
         term_line("write notes.txt hello   run /usr/bin/hello.zs");
     }else if(os_strcmp(command,"clear")==0)term_clear();
@@ -123,7 +123,7 @@ void shell_exec(const char *input){
     }else if(os_strcmp(command,"version")==0 || os_strcmp(command,"ver")==0){
         term_line("ZuzifyOS " ZUZU_VERSION);
     }else if(os_strcmp(command,"uname")==0)term_line("ZuzifyOS x86_64 native-kernel");
-    else if(os_strcmp(command,"whoami")==0)term_line("guest (demo identity; no security model)");
+    else if(os_strcmp(command,"whoami")==0)term_line(ui_username());
     else if(os_strcmp(command,"pwd")==0){
         char cwd[160];fs_pwd(cwd,sizeof(cwd));term_line(cwd);
     }else if(os_strcmp(command,"ls")==0)listing(arg);
@@ -170,10 +170,13 @@ void shell_exec(const char *input){
         if(!*arg)term_line("usage: run <app-name or .zs path>");
         else launch(arg);
     }else if(os_strcmp(command,"calc")==0)calculator(arg);
-    else if(os_strcmp(command,"theme")==0){
+    else if(os_strcmp(command,"settings")==0){ui_open(UI_SETTINGS);
+    }else if(os_strcmp(command,"lock")==0){ui_lock();
+    }else if(os_strcmp(command,"theme")==0){
         if(os_strcmp(arg,"midnight")==0)gfx_set_theme(0);
         else if(os_strcmp(arg,"violet")==0)gfx_set_theme(1);
-        else{term_line("usage: theme midnight|violet");return;}
+        else if(os_strcmp(arg,"ocean")==0)gfx_set_theme(2);
+        else{term_line("usage: theme midnight|violet|ocean");return;}
         term_redraw();term_line("Theme changed.");
     }else if(os_strcmp(command,"update")==0){
         if(!*arg || os_strcmp(arg,"check")==0){
