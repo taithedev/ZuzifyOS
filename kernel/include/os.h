@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "limine_abi.h"
 
-#define ZUZU_VERSION "0.1.0-alpha"
+#define ZUZU_VERSION "0.2.0-alpha"
 #define ZUZU_NAME "ZuzifyOS"
 #define TERM_LINES 56
 #define TERM_COLS 100
@@ -38,12 +38,33 @@ void gfx_rect(int x,int y,int w,int h,uint32_t color);
 void gfx_line(int x0,int y0,int x1,int y1,uint32_t color);
 void gfx_text(int x,int y,const char *s,uint32_t color,int scale);
 void gfx_icon(int x,int y,int kind);
+void gfx_round_rect(int x,int y,int w,int h,int radius,uint32_t color);
+void gfx_glass(int x,int y,int w,int h,int radius,uint32_t tint,int tint_alpha);
+void gfx_set_theme(int mode);
+int gfx_get_theme(void);
+void gfx_cursor(int x,int y);
 void desktop_draw(void);
 
 void term_init(void);
 void term_key(int key);
 void term_line(const char *line);
 void term_redraw(void);
+void term_render(void);
+void ui_init(void);
+void ui_draw(void);
+void ui_key(int key);
+void ui_open(int app);
+void ui_lock(void);
+bool ui_ready(void);
+const char *ui_username(void);
+void ui_mouse_move(int dx,int dy,bool left);
+void mouse_init(void);
+void mouse_feed(uint8_t byte);
+#define UI_TERMINAL 0
+#define UI_FILES 1
+#define UI_SETTINGS 2
+#define UI_APPS 3
+#define UI_NONE 4
 void term_clear(void);
 void shell_exec(const char *command);
 
