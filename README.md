@@ -1,97 +1,65 @@
-# ZuzifyOS
+# ZuzifyOS Linux
 
-A **real, experimental operating system** with its own freestanding C kernel. **It is not Linux, Windows, Electron, or a webpage.** ZuzifyOS boots from an ISO image using Limine.
+**ZuzifyOS Linux** is an independent, experimental **Debian 13 (Trixie)** live distribution with **KDE Plasma 6**, an original macOS-inspired dark glass desktop, native Linux apps, and Wine for compatible Windows programs.
 
-[Boot and test instructions](docs/BOOT-GUIDE.md) | [Roadmap](docs/ROADMAP.md) | [Security limitations](docs/SECURITY-NOTES.md) | [Latest test runs](https://github.com/taithedev/ZuzifyOS/actions)
+> It is **not macOS** and it is **not Windows**. It does not contain Apple's operating system, proprietary Apple assets or Windows APIs. Not all Windows .exe files will run. The first release is for virtual-machine testing; do not install it over Windows.
 
-## Editions
+## Current direction
 
-| Image | CPU | Firmware | Interface |
-|---|---|---|---|
-| `ZuzifyOS-x64-nightly.iso` | x86-64 (64-bit) | Legacy BIOS **and** UEFI | Rounded graphical desktop, translucent glass panels, first-boot wizard, PIN sign-in, settings, terminal, RAM filesystem |
-| `ZuzifyOS-x86-nightly.iso` | i686 (32-bit) | **Legacy BIOS only** | Text console, first-boot wizard, PIN sign-in, basic terminal |
+| Part | Implementation |
+| --- | --- |
+| Kernel | Debian Linux (64-bit PC) |
+| Desktop | KDE Plasma 6 / KWin |
+| Look | Zuzify Glass global theme, floating bottom dock, top menu bar, translucent panels, original wallpaper and icon theme |
+| Applications | Dolphin, Konsole, Kate, Firefox, Settings, software center |
+| Windows programs | Wine (Windows compatibility layer, not a full Windows VM) |
+| Updates | Debian security and app updates via APT; new ISOs built by GitHub Actions |
+| Onboarding | Branded first-run welcome / theme chooser (not a secure OS installation wizard) |
+| Installation | Live ISO only while installer and partition safety are being tested |
 
-**Recommended for most Windows 10/11 computers: x64.** A computer running 64-bit Windows is not guaranteed to boot this experimental OS on real hardware. Testing has only been completed in QEMU.
+## Get the Linux ISO
 
-**Do not install or flash this onto your Windows drive.** Use an isolated virtual machine. This ISO is bootable, but not a full OS installer.
+A successful Linux build is published at [ZuzifyOS Linux nightly](https://github.com/taithedev/ZuzifyOS/releases/tag/linux-nightly).
 
-## First boot
+Choose **ZuzifyOS-Linux-nightly.iso**. The old `ZuzifyOS-x64-nightly.iso` and `ZuzifyOS-x86-nightly.iso` artifacts on the separate legacy release belong to the previous **custom hobby kernel** and **are not Linux**.
 
-64-bit edition:
-1. Boot the x64 ISO in QEMU or another virtual machine.
-2. At the ZuzifyOS welcome screen, press **Enter**.
-3. Create a username with 2–19 letters/numbers/underscores/hyphens.
-4. Enter a 4–8 digit PIN and confirm it.
-5. Unlock using the same PIN.
-6. Use **F1 Terminal**, **F2 Files**, **F3 Settings**, **F4 Applications**. **Esc** closes the current panel.
+If the Linux release does not exist yet, the build is not finished or did not pass. Check [GitHub Actions](https://github.com/taithedev/ZuzifyOS/actions).
 
-32-bit BIOS edition: text-based screens provide the same basic name / PIN sequence and a limited shell.
+## Try it in VirtualBox
 
-**The current account, PIN and files are kept only in RAM and disappear after a reboot.** They are a UI prototype and do not provide secure access control.
+1. Download the Linux ISO from the **linux-nightly** release.
+2. In VirtualBox, create a guest with **Linux → Debian (64-bit)**.
+3. Allocate **4 GB RAM**, **2 CPUs**, and **128 MB video memory** if available.
+4. Attach the ISO to its virtual optical drive. No virtual hard disk is needed for a temporary live demonstration.
+5. Boot the VM and select the live system. Use the Applications menu, File Manager, Settings or Terminal.
 
-## What works in x64 alpha 0.2
+**Important:** With no virtual hard disk and no install, changes in the live session disappear on restart. If VirtualBox says the CPU does not support 64-bit, fix the VM's CPU/architecture/virtualization settings first. Installing a second 32-bit operating-system edition does not fix x64 host configuration.
 
-- Freestanding C kernel booted through Limine using either BIOS or UEFI.
-- Custom direct framebuffer renderer: rounded panels, lightweight sampled blur/tints, pointer-responsive redraw, taskbar and icon glyphs.
-- PS/2 polling keyboard and experimental PS/2 mouse support, mainly for QEMU emulation.
-- Account onboarding, PIN creation, login and lock/unlock interface (temporary only).
-- Settings: Midnight, Violet, Ocean themes and informational system/account screens.
-- File explorer, RAM-only filesystem, text editing and script commands in the terminal.
-- GitHub Actions: x64 BIOS / UEFI and x86 BIOS QEMU smoke tests, setup+PIN keyboard tests, nightly ISO releases.
+## Development
 
-### Terminal examples (x64)
+Linux distribution definitions, theme and installer plans live in [distro/](distro/README.md). A GitHub Actions job validates the config, then builds an amd64 Debian hybrid ISO on pushes to `main` and when manually dispatched.
 
-```
-help
-uname
-whoami
-ls /
-cd /home/guest
-mkdir projects
-write projects/test.txt hello
-cat projects/test.txt
-tree /
-run /usr/bin/tour.zs
-settings
-theme ocean
-lock
+Build locally only on a disposable Debian 13 builder VM/container that supports nested mounts and has enough disk space. **Do not run the privileged builder on a daily-use Windows system.**
+
+```sh
+python3 distro/scripts/validate.py
+# On a throwaway Debian 13 root builder:
+cd distro
+bash scripts/build.sh
 ```
 
-## What does **not** work yet
+## Native kernel preserved
 
-- Permanent account storage or encrypted PIN database
-- Proper userspace access control or strong cryptography
-- Physical hardware USB/Wi-Fi/GPU drivers and full mouse compatibility
-- Real installation, disk partitioning, persistent files, or A/B update system
-- True multitasking, separate user processes, native ELF applications
-- Running arbitrary Windows `.exe` files
-- Actual in-OS network auto-updates
+Earlier ZuzifyOS hobby-kernel source was preserved in the branch [archive/native-kernel-0.2](https://github.com/taithedev/ZuzifyOS/tree/archive/native-kernel-0.2). Files under `kernel/` and `kernel32/` are deprecated and are **not** used for the Linux distribution.
 
-A bootable 32-bit edition does **not** mean the 32-bit edition has every graphical feature of x64. The 32-bit text edition is a compatibility milestone.
+## Project status
 
-## Build and run (Ubuntu or WSL2)
+The Linux ISO workflow must complete successfully before this is called a tested bootable Linux image. This project is not affiliated with Apple, Microsoft, Debian, or KDE; credit and licenses remain with upstream projects. The Zuzify artwork and project-specific files are original contributions.
 
-```bash
-sudo apt-get update
-sudo apt-get install -y build-essential clang lld make curl xorriso qemu-system-x86 ovmf
-git clone https://github.com/taithedev/ZuzifyOS.git
-cd ZuzifyOS
-make all
-make run         # 64-bit graphical BIOS VM
-make run32       # 32-bit text BIOS VM
-make test
-make test32
-make test-interactive
-```
+## Docs
 
-Output: `build/ZuzifyOS.iso` (x64) and `build/ZuzifyOS-x86.iso` (x86).
-
-The build downloads the official Limine binary release. QEMU tests check actual boot markers and inject keyboard input for automated first-run and login verification.
-
-## GitHub releases
-
-Successful main branch builds publish both images under the [nightly prerelease](https://github.com/taithedev/ZuzifyOS/releases/tag/nightly), along with SHA-256 checksums. Git tags like `v0.2.0-alpha` publish versioned assets. **Automatic installation of OS updates is not implemented.**
-
-## License
-
-MIT. This project uses original pixel/vector-style glyphs. It is a hobby project; it is neither endorsed by nor affiliated with Apple or Microsoft.
+- [Live image build](distro/README.md)
+- [Design details](distro/docs/DESIGN.md)
+- [Windows compatibility](distro/docs/WINDOWS-APPS.md)
+- [Updates](distro/docs/UPDATES.md)
+- [Release checklist](distro/docs/RELEASE-CHECKLIST.md)

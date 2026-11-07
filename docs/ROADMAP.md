@@ -1,38 +1,23 @@
-# ZuzifyOS roadmap
+# ZuzifyOS Linux roadmap
 
-## 0.2-alpha - current
-- [x] x64 higher-half kernel boot under Limine on QEMU BIOS and UEFI
-- [x] x86 32-bit independent BIOS Multiboot2 kernel under QEMU
-- [x] x64 dark graphical desktop with rounded corners and sampled translucent panels
-- [x] x64 first-boot wizard, local session username/PIN setup and lock screen
-- [x] x64 keyboard navigation and simulated PS/2 mouse support
-- [x] x64 Settings page with three themes
-- [x] x64 RAM-only file browser, terminal, commands and text scripts
-- [x] x86 text-mode setup, PIN unlock and basic shell
-- [x] Continuous integration checking both architecture boots and setup input
-- [ ] Real-world screenshot and broad UI/usability review
-- [ ] Real device / multiple virtual machine hardware validation
+## 0.1 Linux alpha
+- [x] Choose Debian 13 Trixie x64 and Plasma 6
+- [x] Author distro source configuration for native Linux ISO builds
+- [x] Original glass-inspired KDE global theme, dock, top bar and wallpaper
+- [x] Include Wine64 and Windows-app launcher
+- [x] Branded first-run Qt6 welcome walkthrough
+- [x] APT upgrade and GitHub ISO release workflows
+- [ ] Complete first Linux ISO build
+- [ ] Boot and visually inspect ISO in QEMU / VirtualBox
+- [ ] Validate Wine and themes in running desktop
 
-## 0.3-alpha - kernel fundamentals
-- [ ] Physical page allocator, proper virtual memory management
-- [ ] IDT, interrupts, timers, task/process scheduler
-- [ ] User mode isolation, syscalls and ELF64 application loader
-- [ ] Robust USB HID and mouse input support
-- [ ] Graphics double buffering, proper compositor and windows
-- [ ] Persistent virtual filesystem and safe disk driver
-- [ ] Persistent account DB with salted password hashing and secure handling
-- [ ] x86 GUI feature parity
+## Next
+- [ ] Calamares installer reviewed for safe guided partitioning
+- [ ] Accounts and passwords via normal Linux users, optional PIN via audited PAM module
+- [ ] Wi-Fi/network and GPU hardware validation
+- [ ] Original icons, better animations, rounded window decoration plugin
+- [ ] Zuzify app store front end on top of native package management
+- [ ] Snapshot/rollback and persistent OS-image update mechanism
+- [ ] 32-bit Windows apps via properly tested multiarch Wine libraries
 
-## 0.4-alpha - networking and security
-- [ ] Ethernet NIC driver, network stack and time sync
-- [ ] Cryptographic primitives, key store, verified update manifests
-- [ ] Secure update download/staging/rollback and A/B partitions
-- [ ] Robust filesystem permissions and sandboxing
-
-## Later
-- [ ] Native app ecosystem and package manager
-- [ ] Power management, accessibility and internationalization
-- [ ] Windows .exe compatibility research (PE loader, Win32 APIs or equivalent)
-- [ ] Installation and recovery tooling, extensive hardware tests
-
-**Neither x64 nor x86 image is presently suitable as a full replacement for Windows.**
+Old freestanding-kernel roadmap is available on the archive branch.
