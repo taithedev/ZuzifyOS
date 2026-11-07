@@ -34,7 +34,7 @@ void term_clear(void){
 }
 void term_init(void){
     line_count=0;prompt_len=0;prompt_input[0]=0;
-    term_line("ZUZIFYOS 0.1.0-ALPHA  /  X86-64 KERNEL");
+    term_line("ZUZIFYOS 0.2.0-ALPHA  /  X86-64 KERNEL");
     term_line("WELCOME. TYPE HELP AND PRESS ENTER.");
     term_line("F1:HELP  F2:FILES  F3:ABOUT  F4:APPS");
     term_line("");
