@@ -40,14 +40,16 @@ void term_init(void){
     term_line("");
 }
 void term_redraw(void){
-    desktop_draw();
+    ui_draw();
+}
+void term_render(void){
     int w=gfx_width(),h=gfx_height();
     int x=w>840?185:20,y=101;
     int width=w-x-24,height=h-y-85;
     if(width<180 || height<150)return;
-    gfx_rect(x-2,y-2,width+4,height+4,0x445274);
-    gfx_rect(x,y,width,height,0x0b1323);
-    gfx_rect(x,y,width,50,0x1a263c);
+    gfx_round_rect(x+6,y+8,width,height,24,0x081123);
+    gfx_glass(x,y,width,height,23,0x0e192b,221);
+    gfx_round_rect(x+2,y+2,width-4,49,19,0x1e2b45);
     gfx_rect(x+16,y+17,14,14,0x7f91ff);
     gfx_rect(x+19,y+20,8,8,0x192338);
     gfx_text(x+42,y+15,"ZUZIFY TERMINAL",0xf5f7ff,2);
