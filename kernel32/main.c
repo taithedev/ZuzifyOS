@@ -33,7 +33,7 @@ static void clear(void){
     col=0;row=0;
 }
 static void put(char c){
-    if(c=='\n'){col=0;row++;}else{
+    if(c=='\b'){if(col>0)col--;return;}\n    if(c=='\n'){col=0;row++;}else{
         if(col>=80){col=0;row++;}
         if(row>=25){clear();row=0;}
         video[row*80+col]=(uint16_t)(ink<<8)|(uint8_t)c;
@@ -43,7 +43,6 @@ static void put(char c){
 }
 static void print(const char *s){while(*s)put(*s++);}
 static void println(const char *s){print(s);put('\n');}
-static size_t length(const char *s){size_t n=0;while(s[n])n++;return n;}
 static bool equals(const char *a,const char *b){
     while(*a && *a==*b){a++;b++;}
     return *a==*b;
