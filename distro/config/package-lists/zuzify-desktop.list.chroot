@@ -26,6 +26,9 @@ plasma-nm
 plasma-pa
 plasma-discover
 packagekit
+unattended-upgrades
+python3-pyside6.qtwidgets
+xdg-desktop-portal-kde
 network-manager
 wireplumber
 pipewire-audio
@@ -35,6 +38,7 @@ firefox-esr
 fonts-noto
 fonts-noto-color-emoji
 fonts-inter
+fonts-hack
 papirus-icon-theme
 breeze-icon-theme
 breeze-gtk-theme
