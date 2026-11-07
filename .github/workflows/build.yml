@@ -1,8 +1,8 @@
-name: Build and test ZuzifyOS
+name: ZuzifyOS Linux distribution
 on:
   push:
     branches: [main]
-    tags: ['v*']
+    tags: ['linux-v*']
   pull_request:
   workflow_dispatch:
 
@@ -10,76 +10,73 @@ permissions:
   contents: write
 
 jobs:
-  iso:
+  validate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Install build tools
+      - name: Validate distro files
+        run: python3 distro/scripts/validate.py
+
+  live-iso:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free room for live image assembly
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential clang lld make curl xorriso qemu-system-x86 ovmf
-      - name: Build 64-bit and 32-bit bootable ISOs
-        run: make all
-      - name: Test 64-bit BIOS boot
-        run: make test
-      - name: Test 64-bit UEFI boot
-        run: bash scripts/smoke-test-uefi.sh
-      - name: Test 32-bit BIOS boot
-        run: make test32
-      - name: Verify x64 graphical setup and PIN flow
-        run: make test-interactive
-      - name: Verify x86 text setup and PIN flow
-        run: bash scripts/terminal-test-32.sh
-      - name: Publish CI image artifact
-        uses: actions/upload-artifact@v4
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/hostedtoolcache
+          docker system prune -af || true
+          df -h .
+      - name: Build Debian 13 KDE live ISO
+        run: |
+          docker run --rm --privileged \
+            -v "$PWD:/work" -w /work/distro debian:trixie \
+            bash -ec '
+              export DEBIAN_FRONTEND=noninteractive
+              apt-get update
+              apt-get install -y --no-install-recommends \
+                live-build debootstrap ca-certificates curl gnupg \
+                squashfs-tools xorriso mtools dosfstools \
+                syslinux-utils grub-pc-bin grub-efi-amd64-bin \
+                grub-common librsvg2-bin python3 git make rsync wget
+              bash scripts/build.sh
+            '
+      - name: Verify output image
+        run: |
+          set -euo pipefail
+          test -s distro/build/ZuzifyOS-Linux-amd64.iso
+          cat distro/build/SHA256SUMS.txt
+          file distro/build/ZuzifyOS-Linux-amd64.iso
+      - uses: actions/upload-artifact@v4
         with:
-          name: ZuzifyOS-x64-and-x86-boot-images
+          name: ZuzifyOS-Linux-amd64
           path: |
-            build/ZuzifyOS.iso
-            build/ZuzifyOS-x86.iso
-            build/boot.log
-            build/boot32.log
-            build/uefi.log
-            build/interactive.log
-            build/interactive32.log
-          retention-days: 14
-      - name: Publish rolling development release
+            distro/build/ZuzifyOS-Linux-amd64.iso
+            distro/build/SHA256SUMS.txt
+          retention-days: 7
+      - name: Publish Linux nightly release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          cp build/ZuzifyOS.iso build/ZuzifyOS-x64-nightly.iso
-          cp build/ZuzifyOS-x86.iso build/ZuzifyOS-x86-nightly.iso
-          (cd build && sha256sum ZuzifyOS-x64-nightly.iso ZuzifyOS-x86-nightly.iso > nightly-SHA256SUMS.txt)
-          printf '{"version":"nightly-%s","channel":"nightly","architectures":["x86_64","i686-BIOS"],"automatic_install_supported":false}\n' "$GITHUB_SHA" > build/nightly-update.json
-          if gh release view nightly >/dev/null 2>&1; then
-            gh release upload nightly build/ZuzifyOS-x64-nightly.iso build/ZuzifyOS-x86-nightly.iso build/nightly-SHA256SUMS.txt build/nightly-update.json --clobber
+          cp distro/build/ZuzifyOS-Linux-amd64.iso ZuzifyOS-Linux-nightly.iso
+          sha256sum ZuzifyOS-Linux-nightly.iso > SHA256SUMS-Linux-nightly.txt
+          if gh release view linux-nightly >/dev/null 2>&1; then
+            gh release upload linux-nightly ZuzifyOS-Linux-nightly.iso SHA256SUMS-Linux-nightly.txt --clobber
           else
-            gh release create nightly build/ZuzifyOS-x64-nightly.iso build/ZuzifyOS-x86-nightly.iso build/nightly-SHA256SUMS.txt build/nightly-update.json \
-              --title "Nightly (experimental)" --notes "64-bit BIOS/UEFI graphical edition and 32-bit BIOS text edition. Virtual machines only. No installed OS auto-updater." --prerelease --target main
+            gh release create linux-nightly ZuzifyOS-Linux-nightly.iso SHA256SUMS-Linux-nightly.txt \
+              --prerelease --target main --title "ZuzifyOS Linux Nightly" \
+              --notes "Experimental Debian 13 + KDE Plasma live image. Test only in a virtual machine. Not an officially supported installer."
           fi
-      - name: Prepare tagged release assets
-        if: startsWith(github.ref, 'refs/tags/v')
-        shell: bash
-        run: |
-          set -euo pipefail
-          tag="${GITHUB_REF_NAME}"
-          cp build/ZuzifyOS.iso "build/ZuzifyOS-x64-${tag}.iso"
-          cp build/ZuzifyOS-x86.iso "build/ZuzifyOS-x86-${tag}.iso"
-          cd build
-          sha256sum "ZuzifyOS-x64-${tag}.iso" "ZuzifyOS-x86-${tag}.iso" > SHA256SUMS.txt
-          printf '{"version":"%s","channel":"alpha","architectures":["x86_64","i686-BIOS"],"automatic_install_supported":false}\n' "$tag" > update.json
-      - name: Create versioned GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Publish version-tagged Linux release
+        if: startsWith(github.ref, 'refs/tags/linux-v')
         uses: softprops/action-gh-release@v2
         with:
           prerelease: true
           generate_release_notes: true
           files: |
-            build/ZuzifyOS-x64-${{ github.ref_name }}.iso
-            build/ZuzifyOS-x86-${{ github.ref_name }}.iso
-            build/SHA256SUMS.txt
-            build/update.json
+            distro/build/ZuzifyOS-Linux-amd64.iso
+            distro/build/SHA256SUMS.txt
