@@ -2,18 +2,18 @@
 
 ## Experience
 
-**Objective:** a refined desktop inspired by modern macOS interaction patterns, without copying Apple branding, artwork, icons or code.
+**Objective:** a complete Windows-style daily-use desktop experience using a real KDE Plasma 6 session, with original ZuzifyOS branding. No proprietary Microsoft or Apple code or artwork is included.
 
 - KDE Plasma 6 on the real Debian Linux kernel.
-- A translucent top bar with an application menu, tray and clock.
-- A floating bottom dock using Plasma icon tasks for running windows and favorite applications.
+- One translucent bottom taskbar with an original Zuzify Start icon, native application launcher, running applications, tray, clock, and Show Desktop control.
+- An icon task manager with launchers for Files, Browser, Terminal, Run Windows App, and Settings.
 - Dark background, soft aurora ribbon wallpaper, and accents that change with a Zuzify color scheme.
 - KDE/KWin blur, contrast and animation options, plus rounded Breeze window decorations and Plasma floating panels.
 - First-run Qt6 welcome window with controls, fade-in, original branding and color selection.
 
 ## Reality check
 
-KWin blurs and translucency are hardware/compositor dependent. Not every application can have arbitrarily rounded content corners. The current implementation does **not** reproduce the proprietary macOS compositor, Finder, System Settings or Apple APIs. The startup layout and effects still need visual validation after the actual ISO boots in a VM.
+KWin blurs and translucency are hardware/compositor dependent. Not every application can have arbitrarily rounded content corners. The current implementation does **not** reproduce the Windows kernel, shell APIs or proprietary Windows drivers. Wine compatibility is per-application. The startup layout and effects still need visual validation after the actual ISO boots in a VM.
 
 ## Files
 
