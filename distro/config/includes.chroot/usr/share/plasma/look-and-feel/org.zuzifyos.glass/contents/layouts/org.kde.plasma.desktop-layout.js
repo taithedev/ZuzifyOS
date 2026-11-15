@@ -1,50 +1,39 @@
 /*
- * ZuzifyOS native Plasma 6 desktop layout.
- * Uses documented Plasma scripting API; no Apple binaries/assets.
+ * ZuzifyOS Windows-style KDE Plasma 6 desktop layout.
+ * This is a real native Linux taskbar with real application management.
+ * No proprietary Windows code, images, or APIs are included.
  */
 var plasma = getApiVersion(1);
 
-// Keep the live environment bootable even if an optional widget is missing.
-var top = new Panel();
-top.location = "top";
-top.height = Math.round(gridUnit * 2.05);
-top.floating = true;
-top.alignment = "center";
-top.hiding = "none";
+// One bottom taskbar, Start menu, running programs, system tray, and clock.
+var taskbar = new Panel();
+taskbar.location = "bottom";
+taskbar.height = Math.round(gridUnit * 2.7);
+taskbar.floating = true;
+taskbar.alignment = "center";
+taskbar.hiding = "none";
+taskbar.lengthMode = "fill";
 
-var menu = top.addWidget("org.kde.plasma.kickoff");
-menu.currentConfigGroup = ["General"];
-menu.writeConfig("icon", "start-here-kde");
+var start = taskbar.addWidget("org.kde.plasma.kickoff");
+start.currentConfigGroup = ["General"];
+start.writeConfig("icon", "zuzify-start");
 
-top.addWidget("org.kde.plasma.appmenu");
-top.addWidget("org.kde.plasma.panelspacer");
-top.addWidget("org.kde.plasma.systemtray");
-top.addWidget("org.kde.plasma.digitalclock");
-
-// Plasma 6 floating panel provides the native blurred glass-like dock.
-var dock = new Panel();
-dock.location = "bottom";
-dock.height = Math.round(gridUnit * 3.2);
-dock.floating = true;
-dock.alignment = "center";
-dock.hiding = "none";
-dock.minimumLength = 560;
-dock.maximumLength = 1050;
-dock.lengthMode = "fit";
-
-var dockMenu = dock.addWidget("org.kde.plasma.kickoff");
-dockMenu.currentConfigGroup = ["General"];
-dockMenu.writeConfig("icon", "start-here-kde");
-
-var tasks = dock.addWidget("org.kde.plasma.icontasks");
+// Plasma's icon task manager displays and switches genuine app windows.
+var tasks = taskbar.addWidget("org.kde.plasma.icontasks");
 tasks.currentConfigGroup = ["General"];
 tasks.writeConfig("launchers", [
-  "applications:org.kde.dolphin.desktop",
-  "applications:org.kde.konsole.desktop",
-  "applications:firefox-esr.desktop",
-  "applications:systemsettings.desktop",
-  "applications:zuzify-windows-app.desktop"
+    "applications:org.kde.dolphin.desktop",
+    "applications:firefox-esr.desktop",
+    "applications:org.kde.konsole.desktop",
+    "applications:zuzify-windows-app.desktop",
+    "applications:systemsettings.desktop"
 ].join(","));
+
+// Leave flexible space for the status icons at the right side.
+taskbar.addWidget("org.kde.plasma.panelspacer");
+taskbar.addWidget("org.kde.plasma.systemtray");
+taskbar.addWidget("org.kde.plasma.digitalclock");
+taskbar.addWidget("org.kde.plasma.showdesktop");
 
 for (var i = 0; i < desktops().length; ++i) {
     var desktop = desktops()[i];
