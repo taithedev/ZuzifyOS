@@ -17,13 +17,26 @@
 | Onboarding | Branded first-run welcome / theme chooser (not a secure OS installation wizard) |
 | Installation | Live ISO only while installer and partition safety are being tested |
 
-## Get the Linux ISO
+## Download ZuzifyOS Windows Preview
 
-A successful Linux build is published at [ZuzifyOS Linux nightly](https://github.com/taithedev/ZuzifyOS/releases/tag/linux-nightly).
+The official experimental Linux preview is published at [ZuzifyOS Windows Preview](https://github.com/taithedev/ZuzifyOS/releases/tag/windows-preview) **only after the GitHub Actions ISO build succeeds**.
 
-Choose **ZuzifyOS-Linux-nightly.iso**. The old `ZuzifyOS-x64-nightly.iso` and `ZuzifyOS-x86-nightly.iso` artifacts on the separate legacy release belong to the previous **custom hobby kernel** and **are not Linux**.
+GitHub Releases limits each uploaded asset to 2 GiB, while the complete ZuzifyOS ISO is larger. To obtain a usable ISO on Windows:
 
-If the Linux release does not exist yet, the build is not finished or did not pass. Check [GitHub Actions](https://github.com/taithedev/ZuzifyOS/actions).
+1. Download **all** `ZuzifyOS-Windows-Preview.iso.partNNN` files from the release.
+2. Download `ZuzifyOS-Windows-Preview.iso.sha256` and `Rebuild-ZuzifyOS-ISO.ps1` to the **same folder**.
+3. Open PowerShell in that folder and run:
+
+```powershell
+powershell -NoProfile -File .\Rebuild-ZuzifyOS-ISO.ps1
+```
+
+4. The script rebuilds `ZuzifyOS-Windows-Preview.iso` and verifies its SHA256 hash before reporting success.
+5. Attach the reconstructed ISO to your VM's optical drive and boot it.
+
+The script does not write to any disk partition. If execution policies prevent the script from running, inspect its contents and use the documented Windows PowerShell execution policy options; do not disable system protections permanently.
+
+The old `ZuzifyOS-x64-nightly.iso` and `ZuzifyOS-x86-nightly.iso` assets on the separate [legacy release](https://github.com/taithedev/ZuzifyOS/releases/tag/nightly) belong to the previous hobby kernel. They do not contain the Debian 13 Windows-style desktop.
 
 ## Try it in VirtualBox
 
