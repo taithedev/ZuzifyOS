@@ -1,6 +1,6 @@
 # ZuzifyOS Linux
 
-**ZuzifyOS Linux** is an independent, experimental **Debian 13 (Trixie)** live distribution with **KDE Plasma 6**, an original macOS-inspired dark glass desktop, native Linux apps, and Wine for compatible Windows programs.
+**ZuzifyOS Linux** is an independent, experimental **Debian 13 (Trixie)** live distribution with **KDE Plasma 6**, an original Windows-inspired dark glass desktop, native Linux apps, and Wine for compatible Windows programs.
 
 > It is **not macOS** and it is **not Windows**. It does not contain Apple's operating system, proprietary Apple assets or Windows APIs. Not all Windows .exe files will run. The first release is for virtual-machine testing; do not install it over Windows.
 
@@ -10,9 +10,9 @@
 | --- | --- |
 | Kernel | Debian Linux (64-bit PC) |
 | Desktop | KDE Plasma 6 / KWin |
-| Look | Zuzify Glass global theme, floating bottom dock, top menu bar, translucent panels, original wallpaper and icon theme |
+| Look | Zuzify Glass global theme, single bottom taskbar, Start menu, translucent panels, original wallpaper and icon theme |
 | Applications | Dolphin, Konsole, Kate, Firefox, Settings, software center |
-| Windows programs | Wine (Windows compatibility layer, not a full Windows VM) |
+| Windows programs | Wine, plus file-manager double-click associations and app settings (not full Windows compatibility) |
 | Updates | Debian security and app updates via APT; new ISOs built by GitHub Actions |
 | Onboarding | Branded first-run welcome / theme chooser (not a secure OS installation wizard) |
 | Installation | Live ISO only while installer and partition safety are being tested |
