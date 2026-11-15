@@ -16,6 +16,10 @@ required = {
     "Plasma theme": INCLUDE / "usr/share/plasma/look-and-feel/org.zuzifyos.glass/metadata.json",
     "Plasma layout": INCLUDE / "usr/share/plasma/look-and-feel/org.zuzifyos.glass/contents/layouts/org.kde.plasma.desktop-layout.js",
     "Windows app launcher": INCLUDE / "usr/local/bin/zuzify-run-exe",
+    "Start icon": INCLUDE / "usr/share/icons/hicolor/scalable/apps/zuzify-start.svg",
+    "Windows file associations": INCLUDE / "etc/xdg/mimeapps.list",
+    "Wine settings shortcut": INCLUDE / "usr/share/applications/zuzify-wine-settings.desktop",
+    "Wine uninstaller shortcut": INCLUDE / "usr/share/applications/zuzify-wine-uninstaller.desktop",
     "welcome application": INCLUDE / "usr/local/lib/zuzifyos/welcome.py",
 }
 for name, file in required.items():
@@ -23,6 +27,16 @@ for name, file in required.items():
         sys.exit(f"ERROR: missing {name}: {file}")
     print(f"OK: {name}")
 ET.parse(ROOT / "assets/wallpaper.svg")
+ET.parse(required["Start icon"])
+layout = required["Plasma layout"].read_text()
+assert 'taskbar.location = "bottom"' in layout, "bottom taskbar missing"
+assert 'org.kde.plasma.kickoff' in layout, "Start menu missing"
+assert 'org.kde.plasma.icontasks' in layout, "real window task manager missing"
+assert 'org.kde.plasma.systemtray' in layout, "system tray missing"
+associations = required["Windows file associations"].read_text()
+for mime in ("application/x-ms-dos-executable", "application/x-msi",
+             "application/vnd.microsoft.portable-executable"):
+    assert f"{mime}=zuzify-windows-app.desktop" in associations, f"missing {mime} association"
 metadata = json.loads(required["Plasma theme"].read_text())
 assert metadata["KPackageStructure"] == "Plasma/LookAndFeel"
 assert metadata["KPlugin"]["Id"] == "org.zuzifyos.glass"
