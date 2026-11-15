@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Windows App Uninstaller
+GenericName=Wine installed programs
+Comment=Remove Windows programs installed through Wine
+Exec=wine uninstaller
+Icon=applications-other
+Terminal=false
+Categories=System;Utility;
+StartupNotify=true
