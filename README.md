@@ -1,6 +1,6 @@
 # ZuzifyOS Linux
 
-**ZuzifyOS Linux** is an independent, experimental **Debian 13 (Trixie)** live distribution with **KDE Plasma 6**, an original macOS-inspired dark glass desktop, native Linux apps, and Wine for compatible Windows programs.
+**ZuzifyOS Linux** is an independent, experimental **Debian 13 (Trixie)** live distribution with **KDE Plasma 6**, an original Windows-inspired dark glass desktop, native Linux apps, and Wine for compatible Windows programs.
 
 > It is **not macOS** and it is **not Windows**. It does not contain Apple's operating system, proprietary Apple assets or Windows APIs. Not all Windows .exe files will run. The first release is for virtual-machine testing; do not install it over Windows.
 
@@ -10,24 +10,37 @@
 | --- | --- |
 | Kernel | Debian Linux (64-bit PC) |
 | Desktop | KDE Plasma 6 / KWin |
-| Look | Zuzify Glass global theme, floating bottom dock, top menu bar, translucent panels, original wallpaper and icon theme |
+| Look | Zuzify Glass global theme, single bottom taskbar, Start menu, translucent panels, original wallpaper and icon theme |
 | Applications | Dolphin, Konsole, Kate, Firefox, Settings, software center |
-| Windows programs | Wine (Windows compatibility layer, not a full Windows VM) |
+| Windows programs | Wine, plus file-manager double-click associations and app settings (not full Windows compatibility) |
 | Updates | Debian security and app updates via APT; new ISOs built by GitHub Actions |
 | Onboarding | Branded first-run welcome / theme chooser (not a secure OS installation wizard) |
 | Installation | Live ISO only while installer and partition safety are being tested |
 
-## Get the Linux ISO
+## Download ZuzifyOS Windows Preview
 
-A successful Linux build is published at [ZuzifyOS Linux nightly](https://github.com/taithedev/ZuzifyOS/releases/tag/linux-nightly).
+The official experimental Linux preview is published at [ZuzifyOS Windows Preview](https://github.com/taithedev/ZuzifyOS/releases/tag/windows-preview) **only after the GitHub Actions ISO build succeeds**.
 
-Choose **ZuzifyOS-Linux-nightly.iso**. The old `ZuzifyOS-x64-nightly.iso` and `ZuzifyOS-x86-nightly.iso` artifacts on the separate legacy release belong to the previous **custom hobby kernel** and **are not Linux**.
+GitHub Releases limits each uploaded asset to 2 GiB, while the complete ZuzifyOS ISO is larger. To obtain a usable ISO on Windows:
 
-If the Linux release does not exist yet, the build is not finished or did not pass. Check [GitHub Actions](https://github.com/taithedev/ZuzifyOS/actions).
+1. Download **all** `ZuzifyOS-Windows-Preview.iso.partNNN` files from the release.
+2. Download `ZuzifyOS-Windows-Preview.iso.sha256` and `Rebuild-ZuzifyOS-ISO.ps1` to the **same folder**.
+3. Open PowerShell in that folder and run:
+
+```powershell
+powershell -NoProfile -File .\Rebuild-ZuzifyOS-ISO.ps1
+```
+
+4. The script rebuilds `ZuzifyOS-Windows-Preview.iso` and verifies its SHA256 hash before reporting success.
+5. Attach the reconstructed ISO to your VM's optical drive and boot it.
+
+The script does not write to any disk partition. If execution policies prevent the script from running, inspect its contents and use the documented Windows PowerShell execution policy options; do not disable system protections permanently.
+
+The old `ZuzifyOS-x64-nightly.iso` and `ZuzifyOS-x86-nightly.iso` assets on the separate [legacy release](https://github.com/taithedev/ZuzifyOS/releases/tag/nightly) belong to the previous hobby kernel. They do not contain the Debian 13 Windows-style desktop.
 
 ## Try it in VirtualBox
 
-1. Download the Linux ISO from the **linux-nightly** release.
+1. Download and reconstruct the ISO from the **windows-preview** release using the instructions above.
 2. In VirtualBox, create a guest with **Linux → Debian (64-bit)**.
 3. Allocate **4 GB RAM**, **2 CPUs**, and **128 MB video memory** if available.
 4. Attach the ISO to its virtual optical drive. No virtual hard disk is needed for a temporary live demonstration.

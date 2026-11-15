@@ -142,10 +142,10 @@ class GlassWindow(QMainWindow):
             "Your new desktop",
             "The Zuzify experience.",
             "A real Debian Linux system with a calm, glass-inspired desktop. "
-            "Modern applications, familiar controls, and your own visual identity.",
+            "A Start menu, multitasking taskbar, Windows app support, and ZuzifyOS design.",
         )
         layout.addWidget(self.chip("◈   Real Linux kernel and hardware support"))
-        layout.addWidget(self.chip("◈   KDE Plasma desktop with floating glass panels"))
+        layout.addWidget(self.chip("◈   KDE Plasma desktop with a genuine glass taskbar"))
         layout.addWidget(self.chip("◈   Compatible Windows apps using Wine"))
         layout.addStretch(1)
         return page
@@ -154,7 +154,7 @@ class GlassWindow(QMainWindow):
         page, layout = self.make_page(
             "Look & feel",
             "Your desktop, your style.",
-            "The floating dock, top bar, and rounded panels use KDE Plasma. "
+            "The Start menu, bottom taskbar, and rounded windows use KDE Plasma. "
             "Choose a Zuzify color palette below; you can change it again in Settings.",
         )
         for label, scheme in (
@@ -174,7 +174,7 @@ class GlassWindow(QMainWindow):
             "Windows compatibility",
             "Open more of your apps.",
             "ZuzifyOS includes Wine, a compatibility layer for many Windows "
-            "programs. Some .exe and .msi files work; Windows-only drivers, "
+            "programs. Open supported .exe and .msi files from the file manager; Windows-only drivers, "
             "anti-cheat games, and certain applications will not.",
         )
         b = GlassButton("Choose a Windows .exe or .msi", primary=True)
