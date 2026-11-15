@@ -40,7 +40,7 @@ The old `ZuzifyOS-x64-nightly.iso` and `ZuzifyOS-x86-nightly.iso` assets on the 
 
 ## Try it in VirtualBox
 
-1. Download the Linux ISO from the **linux-nightly** release.
+1. Download and reconstruct the ISO from the **windows-preview** release using the instructions above.
 2. In VirtualBox, create a guest with **Linux → Debian (64-bit)**.
 3. Allocate **4 GB RAM**, **2 CPUs**, and **128 MB video memory** if available.
 4. Attach the ISO to its virtual optical drive. No virtual hard disk is needed for a temporary live demonstration.
