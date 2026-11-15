@@ -2,10 +2,10 @@
 Type=Application
 Name=Run Windows App
 GenericName=Wine executable launcher
-Comment=Open compatible Windows .exe and .msi applications with Wine
+Comment=Choose or double-click Windows .exe and .msi applications to open with Wine
 Exec=/usr/local/bin/zuzify-run-exe %f
 Icon=application-x-executable
 Terminal=false
 Categories=Utility;System;
-MimeType=application/x-ms-dos-executable;application/x-msdownload;application/vnd.microsoft.portable-executable;
+MimeType=application/x-ms-dos-executable;application/x-msdownload;application/vnd.microsoft.portable-executable;application/x-msi;
 StartupNotify=true
