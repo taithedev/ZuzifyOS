@@ -1,0 +1,7 @@
+# Windows executable files open through the ZuzifyOS Wine launcher only
+# after an explicit user double-click/open action. This does not auto-run files.
+[Default Applications]
+application/x-ms-dos-executable=zuzify-windows-app.desktop
+application/x-msdownload=zuzify-windows-app.desktop
+application/vnd.microsoft.portable-executable=zuzify-windows-app.desktop
+application/x-msi=zuzify-windows-app.desktop
